@@ -3,7 +3,7 @@ export const CELL_SIZE = 20;
 export const DIRECTIONS = {
   ArrowLeft: {
     code: 37,
-    movement: -1,
+    movement: -1, // index
     rotation: 180
   },
   ArrowUp: {
