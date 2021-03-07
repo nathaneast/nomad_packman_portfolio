@@ -15,7 +15,7 @@ class GameBoard {
     this.DOMGrid.appendChild(div);
   }
 
-  createGrid(level) {
+  createGrid(level) { // 게임 판을 만듬
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid.innerHTML = '';
@@ -38,7 +38,7 @@ class GameBoard {
     this.grid[pos].classList.add(...classes);
   }
 
-  removeObject(pos, classes) {
+  removeObject(pos, classes) { // 게임판에 해당 위치 정보 제거
     this.grid[pos].classList.remove(...classes);
   }
   // Can have an arrow function here cause of this binding

@@ -11,12 +11,15 @@ export function randomMovement(position, direction, objectExist) {
     objectExist(nextMovePos, OBJECT_TYPE.WALL) ||
     objectExist(nextMovePos, OBJECT_TYPE.GHOST)
   ) {
-    // Get a random key from that array
+    // 
+    // Get a random key from that array 
+    // 디렉션 길이 이하 랜덤키 추출
     const key = keys[Math.floor(Math.random() * keys.length)];
     // Set the new direction
     dir = DIRECTIONS[key];
     // Set the next move
     nextMovePos = position + dir.movement;
+    
   }
 
   return { nextMovePos, direction: dir };

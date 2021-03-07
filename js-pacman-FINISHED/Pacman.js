@@ -56,7 +56,9 @@ class Pacman {
 
     const nextMovePos = this.pos + dir.movement;
     if (objectExist(nextMovePos, OBJECT_TYPE.WALL)) return;
-    this.dir = dir;
+    // 벽이면 이동 x
+    this.dir = dir; 
+    // 팩맨 위치변경
   };
 }
 
