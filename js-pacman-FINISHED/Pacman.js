@@ -45,7 +45,7 @@ class Pacman {
     this.pos = nextMovePos;
   }
 
-  handleKeyInput = (e, objectExist) => {
+  handleKeyInput = (e, objectExist) => { // this: gameBoard
     let dir;
 
     if (e.keyCode >= 37 && e.keyCode <= 40) {

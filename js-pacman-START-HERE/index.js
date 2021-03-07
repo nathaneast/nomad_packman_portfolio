@@ -21,19 +21,36 @@ let gameWin = false;
 let powerPillActive = false;
 let powerPillTimer = null;
 
-function gameOver(packman, grid) {
+function gameOver(pacman, grid) {
 
 }
 
-function checkCollision(packman, ghosts) {
+function checkCollision(pacman, ghosts) {
 
 }
 
-function gameLoop(packman, ghosts) {
-
+function gameLoop(pacman, ghosts) {
+  gameBoard.moveCharacter(pacman);
 }
 
-function startGame(packman, grid) {
+function startGame() {
+  gameWin = false;
+  powerPillActive = false;
+  score = 0;
 
+  gameBoard.createGrid(LEVEL);
+
+  const pacman = new Pacman(2, 287);
+  gameBoard.addObject(287, [OBJECT_TYPE.PACMAN]);
+  // 팩맨 위치에 팩맨 클래스 추가
+
+  document.addEventListener('keydown', (e) => 
+    pacman.handleKeyInput(e, gameBoard.objectExist.bind(gameBoard))
+  );
+
+  //Game Loop
+  timer = setInterval(() => gameLoop(pacman), GLOBAL_SPEED);
 }
 
+// Init game
+startButton.addEventListener('click', startGame);
