@@ -61,6 +61,40 @@ function gameLoop(pacman, ghosts) {
 
   ghosts.forEach((ghost) => gameBoard.moveCharacter(ghost));
   checkCollision(pacman, ghosts);
+
+  // dot 먹었을시
+  if (gameBoard.objectExist(pacman.pos, OBJECT_TYPE.DOT)) {
+    gameBoard.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
+    gameBoard.dotCount--;
+    score += 10;
+  }
+
+  // power pill 먹었을시
+  if (gameBoard.objectExist(pacman.pos, OBJECT_TYPE.PILL)) {
+    gameBoard.removeObject(pacman.pos, [OBJECT_TYPE.PILL]);
+    pacman.powerPill = true;
+    score += 50;
+
+    clearTimeout(powerPillTimer);
+    powerPillTimer = setTimeout(
+      () => (pacman.powerPill = false),
+      POWER_PILL_TIME
+    );
+  }
+
+  // power pill 모드, 고스트 scare 핸들링
+  if (pacman.powerPill !== powerPillActive) {
+    powerPillActive = pacman.powerPill;
+    ghosts.forEach((ghost) => (ghost.isScared = pacman.powerPill));
+  }
+
+  // dot 모두 먹었을시 게임 승리
+  if (gameBoard.dotCount === 0) {
+    gameWin = true;
+    gameOver(pacman, gameGrid);
+  }
+
+  scoreTable.innerHTML = score;
 }
 
 function startGame() {
@@ -87,7 +121,6 @@ function startGame() {
     new Ghost(2, 251, randomMovement, OBJECT_TYPE.CLYDE)
   ];
 
-  //Game Loop
   // 매초 게임 루프 실행
   timer = setInterval(() => gameLoop(pacman, ghosts), GLOBAL_SPEED);
 }
