@@ -14,7 +14,7 @@ export default class App {
 
     // this.portfolio = () => new Portfolio({ $target });
 
-    this.modal = () => new Modal({ $target });
+    // this.modal = () => new Modal({ $target });
 
     this.render();
   }

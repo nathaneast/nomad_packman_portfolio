@@ -1,10 +1,10 @@
 import { LEVEL, OBJECT_TYPE } from './src/util/setup';
-import { randomMovement } from './ghostmoves';
+import { randomMovement } from './src/util/ghostmoves';
 
 // Classes
 import GameBoard from './gameBoard';
-import Pacman from './Pacman';
-import Ghost from './Ghost';
+import Pacman from './src/components/Pacman';
+import Ghost from './src/components/Ghost';
 
 // Sounds
 import soundDot from './sounds/munch.wav';

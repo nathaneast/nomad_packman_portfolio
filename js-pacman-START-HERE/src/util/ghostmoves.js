@@ -1,4 +1,4 @@
-import { DIRECTIONS, OBJECT_TYPE } from './src/util/setup';
+import { DIRECTIONS, OBJECT_TYPE } from './setup';
 
 // 고스트의 랜덤 다음 포지션, 방향 리턴
 export function randomMovement(position, direction, objectExist) {

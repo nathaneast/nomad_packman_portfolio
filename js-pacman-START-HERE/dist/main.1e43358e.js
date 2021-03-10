@@ -143,107 +143,24 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-},{}],"src/components/game/ScoreRow.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ScoreRow = /*#__PURE__*/function () {
-  function ScoreRow(_ref) {
-    var $target = _ref.$target;
-    (0, _classCallCheck2.default)(this, ScoreRow);
-    this.score = 0;
-    this.scoreRow = document.createElement('div');
-    this.scoreRow.className = 'score';
-    $target.appendChild(this.scoreRow);
-    this.render();
+},{}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
   }
 
-  (0, _createClass2.default)(ScoreRow, [{
-    key: "setState",
-    value: function setState(score) {
-      this.score = score;
-      this.render();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      this.scoreRow.innerHTML = "\n        <span>".concat(0, "</span>\n      ");
-    }
-  }]);
-  return ScoreRow;
-}();
-
-exports.default = ScoreRow;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js"}],"node_modules/@babel/runtime/helpers/arrayLikeToArray.js":[function(require,module,exports) {
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
+  return obj;
 }
 
-module.exports = _arrayLikeToArray;
-},{}],"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":[function(require,module,exports) {
-var arrayLikeToArray = require("./arrayLikeToArray");
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return arrayLikeToArray(arr);
-}
-
-module.exports = _arrayWithoutHoles;
-},{"./arrayLikeToArray":"node_modules/@babel/runtime/helpers/arrayLikeToArray.js"}],"node_modules/@babel/runtime/helpers/iterableToArray.js":[function(require,module,exports) {
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-}
-
-module.exports = _iterableToArray;
-},{}],"node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":[function(require,module,exports) {
-var arrayLikeToArray = require("./arrayLikeToArray");
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-}
-
-module.exports = _unsupportedIterableToArray;
-},{"./arrayLikeToArray":"node_modules/@babel/runtime/helpers/arrayLikeToArray.js"}],"node_modules/@babel/runtime/helpers/nonIterableSpread.js":[function(require,module,exports) {
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-module.exports = _nonIterableSpread;
-},{}],"node_modules/@babel/runtime/helpers/toConsumableArray.js":[function(require,module,exports) {
-var arrayWithoutHoles = require("./arrayWithoutHoles");
-
-var iterableToArray = require("./iterableToArray");
-
-var unsupportedIterableToArray = require("./unsupportedIterableToArray");
-
-var nonIterableSpread = require("./nonIterableSpread");
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./unsupportedIterableToArray":"node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"src/util/setup.js":[function(require,module,exports) {
+module.exports = _defineProperty;
+},{}],"src/util/setup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -303,7 +220,159 @@ OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // prettier-ignore
 exports.CLASS_LIST = CLASS_LIST;
 var LEVEL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 2, 2, 2, 1, 9, 9, 9, 9, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 exports.LEVEL = LEVEL;
-},{}],"src/components/game/Board.js":[function(require,module,exports) {
+},{}],"src/util/ghostmoves.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.randomMovement = randomMovement;
+
+var _setup = require("./setup");
+
+// 고스트의 랜덤 다음 포지션, 방향 리턴
+function randomMovement(position, direction, objectExist) {
+  var dir = direction;
+  var nextMovePos = position + dir.movement;
+  var keys = Object.keys(_setup.DIRECTIONS); // 다음 포지션에 벽, 고스트 있을시
+
+  while (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _setup.OBJECT_TYPE.GHOST)) {
+    var key = keys[Math.floor(Math.random() * keys.length)];
+    dir = _setup.DIRECTIONS[key];
+    nextMovePos = position + dir.movement;
+  }
+
+  return {
+    nextMovePos: nextMovePos,
+    direction: dir
+  };
+}
+},{"./setup":"src/util/setup.js"}],"src/sounds/munch.wav":[function(require,module,exports) {
+module.exports = "/munch.f3a4c480.wav";
+},{}],"src/sounds/pill.wav":[function(require,module,exports) {
+module.exports = "/pill.7f28832c.wav";
+},{}],"src/sounds/game_start.wav":[function(require,module,exports) {
+module.exports = "/game_start.f24889e8.wav";
+},{}],"src/sounds/death.wav":[function(require,module,exports) {
+module.exports = "/death.b30ce0f9.wav";
+},{}],"src/sounds/eat_ghost.wav":[function(require,module,exports) {
+module.exports = "/eat_ghost.3535174a.wav";
+},{}],"src/util/modalSentence.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.INTRODUCE = void 0;
+var INTRODUCE = '소개!';
+exports.INTRODUCE = INTRODUCE;
+},{}],"src/components/game/Header.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _modalSentence = require("../../util/modalSentence");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = /*#__PURE__*/function () {
+  function Header(_ref) {
+    var $target = _ref.$target,
+        visibleModal = _ref.visibleModal;
+    (0, _classCallCheck2.default)(this, Header);
+    this.header = document.createElement('div');
+    this.header.className = 'game-header';
+    $target.appendChild(this.header);
+    this.render();
+  }
+
+  (0, _createClass2.default)(Header, [{
+    key: "setState",
+    value: function setState(score) {
+      this.score = score;
+      this.render();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.header.innerHTML = "\n      <button onclick=".concat(function () {
+        return visibleModal(_modalSentence.INTRODUCE);
+      }, ">\uC124\uBA85\uBCF4\uAE30</button>\n      <button onclick=").concat(function () {
+        return visibleModal(_modalSentence.INTRODUCE);
+      }, ">\uB7AD\uD0B9\uBCF4\uAE30</button>\n      ");
+    }
+  }]);
+  return Header;
+}();
+
+exports.default = Header;
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","../../util/modalSentence":"src/util/modalSentence.js"}],"node_modules/@babel/runtime/helpers/arrayLikeToArray.js":[function(require,module,exports) {
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+module.exports = _arrayLikeToArray;
+},{}],"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":[function(require,module,exports) {
+var arrayLikeToArray = require("./arrayLikeToArray");
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+module.exports = _arrayWithoutHoles;
+},{"./arrayLikeToArray":"node_modules/@babel/runtime/helpers/arrayLikeToArray.js"}],"node_modules/@babel/runtime/helpers/iterableToArray.js":[function(require,module,exports) {
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+},{}],"node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":[function(require,module,exports) {
+var arrayLikeToArray = require("./arrayLikeToArray");
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
+
+module.exports = _unsupportedIterableToArray;
+},{"./arrayLikeToArray":"node_modules/@babel/runtime/helpers/arrayLikeToArray.js"}],"node_modules/@babel/runtime/helpers/nonIterableSpread.js":[function(require,module,exports) {
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableSpread;
+},{}],"node_modules/@babel/runtime/helpers/toConsumableArray.js":[function(require,module,exports) {
+var arrayWithoutHoles = require("./arrayWithoutHoles");
+
+var iterableToArray = require("./iterableToArray");
+
+var unsupportedIterableToArray = require("./unsupportedIterableToArray");
+
+var nonIterableSpread = require("./nonIterableSpread");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./unsupportedIterableToArray":"node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"src/components/game/Board.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -329,8 +398,7 @@ var Board = /*#__PURE__*/function () {
     this.grid = [];
     this.board = document.createElement('div');
     this.board.className = 'game-board';
-    $target.appendChild(this.board);
-    this.createGrid(_setup.LEVEL);
+    $target.appendChild(this.board); // this.createGrid(LEVEL);
   }
 
   (0, _createClass2.default)(Board, [{
@@ -415,21 +483,19 @@ var Board = /*#__PURE__*/function () {
         character.setNewPos(nextMovePos, direction);
       }
     }
+  }], [{
+    key: "createGameBoard",
+    value: function createGameBoard(DOMGrid, level) {
+      var board = new this(DOMGrid);
+      board.createGrid(level);
+      return board;
+    }
   }]);
   return Board;
 }();
 
 exports.default = Board;
-},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","../../util/setup":"src/util/setup.js"}],"src/util/modalSentence.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.INTRODUCE = void 0;
-var INTRODUCE = '소개!';
-exports.INTRODUCE = INTRODUCE;
-},{}],"src/components/game/Header.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","../../util/setup":"src/util/setup.js"}],"src/components/game/ScoreRow.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -441,22 +507,20 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _modalSentence = require("../../util/modalSentence");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Header = /*#__PURE__*/function () {
-  function Header(_ref) {
-    var $target = _ref.$target,
-        visibleModal = _ref.visibleModal;
-    (0, _classCallCheck2.default)(this, Header);
-    this.header = document.createElement('div');
-    this.header.className = 'game-header';
-    $target.appendChild(this.header);
+var ScoreRow = /*#__PURE__*/function () {
+  function ScoreRow(_ref) {
+    var $target = _ref.$target;
+    (0, _classCallCheck2.default)(this, ScoreRow);
+    this.score = 0;
+    this.scoreRow = document.createElement('div');
+    this.scoreRow.className = 'score';
+    $target.appendChild(this.scoreRow);
     this.render();
   }
 
-  (0, _createClass2.default)(Header, [{
+  (0, _createClass2.default)(ScoreRow, [{
     key: "setState",
     value: function setState(score) {
       this.score = score;
@@ -465,18 +529,14 @@ var Header = /*#__PURE__*/function () {
   }, {
     key: "render",
     value: function render() {
-      this.header.innerHTML = "\n      <button onClick=".concat(function () {
-        return visibleModal(_modalSentence.INTRODUCE);
-      }, ">\uC124\uBA85\uBCF4\uAE30</button>\n      <button onClick=").concat(function () {
-        return visibleModal(_modalSentence.INTRODUCE);
-      }, ">\uB7AD\uD0B9\uBCF4\uAE30</button>\n      ");
+      this.scoreRow.innerHTML = "\n        <span>".concat(0, "</span>\n      ");
     }
   }]);
-  return Header;
+  return ScoreRow;
 }();
 
-exports.default = Header;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","../../util/modalSentence":"src/util/modalSentence.js"}],"src/components/Interface.js":[function(require,module,exports) {
+exports.default = ScoreRow;
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js"}],"src/components/game/Interface.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -493,32 +553,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Interface = /*#__PURE__*/function () {
   function Interface(_ref) {
     var $target = _ref.$target,
-        gameStart = _ref.gameStart;
+        onStartGame = _ref.onStartGame;
     (0, _classCallCheck2.default)(this, Interface);
     this.interface = document.createElement('div');
     this.interface.className = 'interface';
-    this.gameStart = gameStart;
+    this.onStartGame = onStartGame;
     $target.appendChild(this.interface);
     this.render();
   }
 
   (0, _createClass2.default)(Interface, [{
-    key: "setState",
-    value: function setState(score) {
-      this.score = score;
-      this.render();
-    }
-  }, {
     key: "render",
     value: function render() {
-      this.interface.innerHTML = "\n      <button id=\"start-button\">Start Game</button>\n    ";
+      this.interface.innerHTML = "\n      <button class=\"start-button\">\n        \uAC8C\uC784\uC2DC\uC791\n      </button>\n    ";
+      document.querySelector('.start-button').onclick = this.onStartGame;
     }
   }]);
   return Interface;
 }();
 
 exports.default = Interface;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js"}],"src/components/game/Game.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js"}],"src/components/Pacman.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -528,43 +583,293 @@ exports.default = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _ScoreRow = _interopRequireDefault(require("./ScoreRow"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _Board = _interopRequireDefault(require("./Board"));
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _Header = _interopRequireDefault(require("./Header"));
-
-var _Interface = _interopRequireDefault(require("../Interface"));
+var _setup = require("../util/setup");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Game = function Game(_ref) {
-  var $target = _ref.$target,
-      redirectProtfolio = _ref.redirectProtfolio,
-      visibleModal = _ref.visibleModal;
-  (0, _classCallCheck2.default)(this, Game);
-  this.redirectProtfolio = redirectProtfolio;
-  this.header = new _Header.default({
-    $target: $target,
-    visibleModal: visibleModal
-  }); // 클릭시 해당 모달 발생
+var Pacman = /*#__PURE__*/function () {
+  function Pacman(speed, startPos) {
+    var _this = this;
 
-  this.board = new _Board.default({
-    $target: $target
-  }); // 점수 오를시 score.setState
-  // 게임 승리 -> 포트폴리오 이동
+    (0, _classCallCheck2.default)(this, Pacman);
+    (0, _defineProperty2.default)(this, "handleKeyInput", function (e, objectExist) {
+      var dir;
 
-  this.score = new _ScoreRow.default({
-    $target: $target
-  });
-  this.interface = new _Interface.default({
-    $target: $target // onGameStart: this.gameStart,
+      if (e.keyCode >= 37 && e.keyCode <= 40) {
+        dir = _setup.DIRECTIONS[e.key];
+      } else {
+        return;
+      }
 
-  }); // 시작버튼 클릭 -> 게임시작 로직 실행
-};
+      var nextMovePos = _this.pos + dir.movement;
+      if (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL)) return;
+      _this.dir = dir;
+    });
+    this.pos = startPos;
+    this.speed = speed;
+    this.dir = null;
+    this.timer = 0; // ?
+
+    this.powerPill = false;
+    this.rotation = true; // ?
+  }
+
+  (0, _createClass2.default)(Pacman, [{
+    key: "shouldMove",
+    value: function shouldMove() {
+      if (!this.dir) return;
+
+      if (this.timer === this.speed) {
+        this.timer = 0;
+        return true;
+      }
+
+      this.timer++;
+    }
+  }, {
+    key: "getNextMove",
+    value: function getNextMove(objectExist) {
+      var nextMovePos = this.pos + this.dir.movement;
+
+      if (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _setup.OBJECT_TYPE.GHOSTLAIR)) {
+        nextMovePos = this.pos;
+      }
+
+      return {
+        nextMovePos: nextMovePos,
+        direction: this.dir
+      };
+    }
+  }, {
+    key: "makeMove",
+    value: function makeMove() {
+      var classesToRemove = [_setup.OBJECT_TYPE.PACMAN];
+      var classesToAdd = [_setup.OBJECT_TYPE.PACMAN];
+      return {
+        classesToRemove: classesToRemove,
+        classesToAdd: classesToAdd
+      };
+    }
+  }, {
+    key: "setNewPos",
+    value: function setNewPos(nextMovePos) {
+      this.pos = nextMovePos;
+    }
+  }]);
+  return Pacman;
+}();
+
+var _default = Pacman;
+exports.default = _default;
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","../util/setup":"src/util/setup.js"}],"src/components/Ghost.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _setup = require("../util/setup");
+
+var _ghostmoves = require("../util/ghostmoves");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Ghost = /*#__PURE__*/function () {
+  function Ghost() {
+    var speed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 5;
+    var startPos = arguments.length > 1 ? arguments[1] : undefined;
+    var movement = arguments.length > 2 ? arguments[2] : undefined;
+    var name = arguments.length > 3 ? arguments[3] : undefined;
+    (0, _classCallCheck2.default)(this, Ghost);
+    this.name = name;
+    this.movement = movement;
+    this.startPos = startPos;
+    this.pos = startPos;
+    this.dir = _setup.DIRECTIONS.ArrowRight;
+    this.speed = speed;
+    this.timer = 0;
+    this.isScared = false;
+    this.rotation = false;
+  } // 특정 시간 이후에 움직임 핸들링
+
+
+  (0, _createClass2.default)(Ghost, [{
+    key: "shouldMove",
+    value: function shouldMove() {
+      if (this.timer === this.speed) {
+        this.timer = 0;
+        return true;
+      }
+
+      this.timer++;
+    }
+  }, {
+    key: "getNextMove",
+    value: function getNextMove(objectExist) {
+      var _this$movement = this.movement(this.pos, this.dir, objectExist),
+          nextMovePos = _this$movement.nextMovePos,
+          direction = _this$movement.direction;
+
+      return {
+        nextMovePos: nextMovePos,
+        direction: direction
+      };
+    }
+  }, {
+    key: "makeMove",
+    value: function makeMove() {
+      var classesToRemove = [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, this.name];
+      var classesToAdd = [_setup.OBJECT_TYPE.GHOST, this.name]; // 고스트 이름
+
+      if (this.isScared) {
+        classesToAdd = [].concat((0, _toConsumableArray2.default)(classesToAdd), [_setup.OBJECT_TYPE.SCARED]);
+      }
+
+      return {
+        classesToRemove: classesToRemove,
+        classesToAdd: classesToAdd
+      };
+    }
+  }, {
+    key: "setNewPos",
+    value: function setNewPos(nextMovePos, direction) {
+      this.pos = nextMovePos;
+      this.dir = direction;
+    }
+  }]);
+  return Ghost;
+}();
+
+var _default = Ghost;
+exports.default = _default;
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","../util/setup":"src/util/setup.js","../util/ghostmoves":"src/util/ghostmoves.js"}],"src/components/game/Game.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _setup = require("../../util/setup");
+
+var _ghostmoves = require("../../util/ghostmoves");
+
+var _munch = _interopRequireDefault(require("../../sounds/munch.wav"));
+
+var _pill = _interopRequireDefault(require("../../sounds/pill.wav"));
+
+var _game_start = _interopRequireDefault(require("../../sounds/game_start.wav"));
+
+var _death = _interopRequireDefault(require("../../sounds/death.wav"));
+
+var _eat_ghost = _interopRequireDefault(require("../../sounds/eat_ghost.wav"));
+
+var _Header = _interopRequireDefault(require("./Header"));
+
+var _Board = _interopRequireDefault(require("./Board"));
+
+var _ScoreRow = _interopRequireDefault(require("./ScoreRow"));
+
+var _Interface = _interopRequireDefault(require("./Interface"));
+
+var _Pacman = _interopRequireDefault(require("../Pacman"));
+
+var _Ghost = _interopRequireDefault(require("../Ghost"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Sounds
+// Components
+var Game = /*#__PURE__*/function () {
+  function Game(_ref) {
+    var $target = _ref.$target,
+        redirectProtfolio = _ref.redirectProtfolio,
+        visibleModal = _ref.visibleModal;
+    (0, _classCallCheck2.default)(this, Game);
+    (0, _defineProperty2.default)(this, "POWER_PILL_TIME", 10000);
+    (0, _defineProperty2.default)(this, "GLOBAL_SPEED", 80);
+    (0, _defineProperty2.default)(this, "score", 0);
+    (0, _defineProperty2.default)(this, "timer", null);
+    (0, _defineProperty2.default)(this, "gameWin", false);
+    (0, _defineProperty2.default)(this, "powerPillActive", false);
+    (0, _defineProperty2.default)(this, "powerPillTimer", null);
+    this.redirectProtfolio = redirectProtfolio;
+    this.header = new _Header.default({
+      $target: $target,
+      visibleModal: visibleModal
+    }); // 클릭시 해당 모달 발생
+
+    this.board = new _Board.default({
+      $target: $target
+    }); // 점수 오를시 score.setState
+    // 게임 승리 -> 포트폴리오 이동
+
+    this.score = new _ScoreRow.default({
+      $target: $target
+    });
+    this.interface = new _Interface.default({
+      $target: $target,
+      onStartGame: this.startGame
+    }); // 시작버튼 클릭 -> 게임시작 로직 실행
+  } // Game Constants
+
+
+  (0, _createClass2.default)(Game, [{
+    key: "playAudio",
+    value: function playAudio(audio) {
+      var soundEffect = new Audio(audio);
+      soundEffect.play();
+    }
+  }, {
+    key: "startGame",
+    value: function startGame() {
+      var _this = this;
+
+      // this.playAudio(soundGameStart);
+      // const soundEffect = new Audio(soundGameStart);
+      // soundEffect.play();
+      this.gameWin = false;
+      this.powerPillActive = false;
+      this.score = 0;
+      document.querySelector('.start-button').classList.add('hide'); // 시작버튼 hide
+
+      console.log(this.board, this.header, 'this.board');
+      this.board.createGrid(_setup.LEVEL);
+      var pacman = new _Pacman.default(2, 287);
+      this.board.addObject(287, [_setup.OBJECT_TYPE.PACMAN]); // 팩맨 위치에 팩맨 클래스 추가
+
+      document.addEventListener('keydown', function (e) {
+        return pacman.handleKeyInput(e, board.objectExist.bind(_this.board));
+      });
+      var ghosts = [new _Ghost.default(5, 188, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.PINKY), new _Ghost.default(3, 230, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(2, 251, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.CLYDE)]; // 매초 게임 루프 실행
+
+      this.timer = setInterval(function () {
+        return gameLoop(pacman, ghosts);
+      }, GLOBAL_SPEED);
+    }
+  }]);
+  return Game;
+}();
 
 exports.default = Game;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","./ScoreRow":"src/components/game/ScoreRow.js","./Board":"src/components/game/Board.js","./Header":"src/components/game/Header.js","../Interface":"src/components/Interface.js"}],"src/App.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","../../util/setup":"src/util/setup.js","../../util/ghostmoves":"src/util/ghostmoves.js","../../sounds/munch.wav":"src/sounds/munch.wav","../../sounds/pill.wav":"src/sounds/pill.wav","../../sounds/game_start.wav":"src/sounds/game_start.wav","../../sounds/death.wav":"src/sounds/death.wav","../../sounds/eat_ghost.wav":"src/sounds/eat_ghost.wav","./Header":"src/components/game/Header.js","./Board":"src/components/game/Board.js","./ScoreRow":"src/components/game/ScoreRow.js","./Interface":"src/components/game/Interface.js","../Pacman":"src/components/Pacman.js","../Ghost":"src/components/Ghost.js"}],"src/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -596,13 +901,8 @@ var App = /*#__PURE__*/function () {
         visibleModal: _this.visibleModal
       });
     }; // this.portfolio = () => new Portfolio({ $target });
+    // this.modal = () => new Modal({ $target });
 
-
-    this.modal = function () {
-      return new Modal({
-        $target: $target
-      });
-    };
 
     this.render();
   }
@@ -668,7 +968,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "14091" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3018" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

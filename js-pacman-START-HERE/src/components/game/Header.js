@@ -16,8 +16,8 @@ export default class Header {
 
   render () {
     this.header.innerHTML = `
-      <button onClick=${() => visibleModal(INTRODUCE)}>설명보기</button>
-      <button onClick=${() => visibleModal(INTRODUCE)}>랭킹보기</button>
+      <button onclick=${() => visibleModal(INTRODUCE)}>설명보기</button>
+      <button onclick=${() => visibleModal(INTRODUCE)}>랭킹보기</button>
       `;
   }
 }

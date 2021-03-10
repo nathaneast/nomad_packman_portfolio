@@ -15,7 +15,7 @@ export default class Board {
     this.board.className = 'game-board';
     $target.appendChild(this.board);
 
-    this.createGrid(LEVEL);
+    // this.createGrid(LEVEL);
   }
 
   showGameStatus(gameWin) {
@@ -82,5 +82,11 @@ export default class Board {
 
       character.setNewPos(nextMovePos, direction);
     }
+  }
+
+  static createGameBoard(DOMGrid, level) {
+    const board = new this(DOMGrid);
+    board.createGrid(level);
+    return board;
   }
 }
