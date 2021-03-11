@@ -67,6 +67,10 @@ export default class Board {
     this.grid[pos].classList.remove(...classes);
   }
 
+  removeItem(pos) {
+    this.grid[pos].innerHTML = '';
+  }
+
   // Can have an arrow function here cause of this binding
   objectExist(pos, object) {
     return this.grid[pos].classList.contains(object);

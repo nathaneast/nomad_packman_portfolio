@@ -506,6 +506,11 @@ var Board = /*#__PURE__*/function () {
 
       // 게임판에 해당 위치 정보 제거
       (_this$grid$pos$classL2 = this.grid[pos].classList).remove.apply(_this$grid$pos$classL2, (0, _toConsumableArray2.default)(classes));
+    }
+  }, {
+    key: "removeItem",
+    value: function removeItem(pos) {
+      this.grid[pos].innerHTML = '';
     } // Can have an arrow function here cause of this binding
 
   }, {
@@ -877,8 +882,6 @@ var Game = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Game);
     (0, _defineProperty2.default)(this, "POWER_PILL_TIME", 10000);
     (0, _defineProperty2.default)(this, "GLOBAL_SPEED", 80);
-    (0, _defineProperty2.default)(this, "pacman", null);
-    (0, _defineProperty2.default)(this, "ghosts", null);
     (0, _defineProperty2.default)(this, "timer", null);
     (0, _defineProperty2.default)(this, "gameWin", false);
     (0, _defineProperty2.default)(this, "powerPillActive", false);
@@ -987,10 +990,15 @@ var Game = /*#__PURE__*/function () {
 
 
       if (this.board.objectExist(pacman.pos, ['item'])) {
-        this.playAudio(_munch.default);
-        this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
-        this.board.dotCount--;
-        this.scoreRow.setState(10);
+        clearInterval(this.timer);
+        this.board.removeObject(pacman.pos, ['item', _setup.OBJECT_TYPE.ITEM_CONTACT, _setup.OBJECT_TYPE.ITEM_PORTFOLIO, _setup.OBJECT_TYPE.ITEM_SKILL, _setup.OBJECT_TYPE.ITEM_INTRODUCE]);
+        this.board.removeItem(pacman.pos);
+        setTimeout(function () {
+          console.log('3초 후 게임 재시작');
+          _this3.timer = setInterval(function () {
+            return _this3.gameLoop(pacman, ghosts);
+          }, _this3.GLOBAL_SPEED);
+        }, 3000);
       } // dot 모두 먹었을시 게임 승리
 
 
@@ -1022,14 +1030,6 @@ var Game = /*#__PURE__*/function () {
       this.timer = setInterval(function () {
         return _this4.gameLoop(pacman, ghosts);
       }, this.GLOBAL_SPEED);
-      setTimeout(function () {
-        console.log('3초 후 게임 종료');
-        clearTimeout(_this4.timer);
-        console.log(_this4.timer, 'this.timer');
-        setTimeout(function () {
-          console.log('6초 후 게임 재시작');
-        }, 3000);
-      }, 3000);
     }
   }]);
   return Game;

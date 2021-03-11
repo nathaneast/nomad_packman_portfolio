@@ -48,8 +48,8 @@ export default class Game {
   GLOBAL_SPEED = 80; // ms
 
   // Charactor
-  pacman = null;
-  ghosts = null;
+  // pacman = null;
+  // ghosts = null;
 
   // Init Setup
   timer = null;
@@ -138,11 +138,26 @@ export default class Game {
 
     // 아이템을 먹었을때
     if (this.board.objectExist(pacman.pos, ['item'])) {
-      this.playAudio(soundDot);
+      clearInterval(this.timer);
 
-      this.board.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
-      this.board.dotCount--;
-      this.scoreRow.setState(10);
+      this.board.removeObject(pacman.pos, [  
+        'item',
+        OBJECT_TYPE.ITEM_CONTACT, 
+        OBJECT_TYPE.ITEM_PORTFOLIO,
+        OBJECT_TYPE.ITEM_SKILL,
+        OBJECT_TYPE.ITEM_INTRODUCE
+      ]);
+
+      this.board.removeItem(pacman.pos);
+
+      setTimeout(() => {
+        console.log('3초 후 게임 재시작');
+        this.timer = setInterval(
+          () => this.gameLoop(pacman, ghosts),
+          this.GLOBAL_SPEED
+        );
+      }, 3000);
+
     }
 
 
@@ -183,17 +198,5 @@ export default class Game {
 
     // 매초 게임 루프 실행
     this.timer = setInterval(() => this.gameLoop(pacman, ghosts), this.GLOBAL_SPEED);
-
-    setTimeout(() => {
-      console.log('3초 후 게임 종료');
-      clearTimeout(this.timer);
-      console.log(this.timer, 'this.timer');
-
-      setTimeout(() => {
-        console.log('6초 후 게임 재시작');
-      }, 3000);
-
-    }, 3000)
-
   }
 }
