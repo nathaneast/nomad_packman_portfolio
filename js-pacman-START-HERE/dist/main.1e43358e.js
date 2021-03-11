@@ -392,13 +392,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Board = /*#__PURE__*/function () {
   function Board(_ref) {
-    var $target = _ref.$target;
+    var $gameBoard = _ref.$gameBoard;
     (0, _classCallCheck2.default)(this, Board);
+    this.$gameBoard = $gameBoard;
     this.dotCount = 0;
     this.grid = [];
-    this.board = document.createElement('div');
-    this.board.className = 'game-board';
-    $target.appendChild(this.board); // this.createGrid(LEVEL);
   }
 
   (0, _createClass2.default)(Board, [{
@@ -407,7 +405,7 @@ var Board = /*#__PURE__*/function () {
       var div = document.createElement('div');
       div.classList.add('game-status');
       div.innerHTML = "".concat(gameWin ? 'win!' : 'lose!');
-      this.board.appendChild(div);
+      this.$gameBoard.appendChild(div);
     }
   }, {
     key: "createGrid",
@@ -416,14 +414,14 @@ var Board = /*#__PURE__*/function () {
 
       this.dotCount = 0;
       this.grid = [];
-      this.board.innerHTML = '';
-      this.board.style.cssText = "grid-template-columns: repeat(".concat(_setup.GRID_SIZE, ", ").concat(_setup.CELL_SIZE, "px);");
+      this.$gameBoard.innerHTML = '';
+      this.$gameBoard.style.cssText = "grid-template-columns: repeat(".concat(_setup.GRID_SIZE, ", ").concat(_setup.CELL_SIZE, "px);");
       level.forEach(function (square) {
         var div = document.createElement('div');
         div.classList.add('square', _setup.CLASS_LIST[square]);
         div.style.cssText = "width: ".concat(_setup.CELL_SIZE, "px; height: ").concat(_setup.CELL_SIZE, "px;");
 
-        _this.board.appendChild(div);
+        _this.$gameBoard.appendChild(div);
 
         _this.grid.push(div); // Add dots
 
@@ -482,12 +480,15 @@ var Board = /*#__PURE__*/function () {
         this.addObject(nextMovePos, classesToAdd);
         character.setNewPos(nextMovePos, direction);
       }
-    }
+    } // static createGameBoard(DOMGrid, level) {
+
   }], [{
     key: "createGameBoard",
-    value: function createGameBoard(DOMGrid, level) {
-      var board = new this(DOMGrid);
-      board.createGrid(level);
+    value: function createGameBoard(domEle) {
+      var board = new this({
+        $gameBoard: domEle
+      });
+      board.createGrid(_setup.LEVEL);
       return board;
     }
   }]);
@@ -799,6 +800,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Components
 var Game = /*#__PURE__*/function () {
   function Game(_ref) {
+    var _this = this;
+
     var $target = _ref.$target,
         redirectProtfolio = _ref.redirectProtfolio,
         visibleModal = _ref.visibleModal;
@@ -810,23 +813,30 @@ var Game = /*#__PURE__*/function () {
     (0, _defineProperty2.default)(this, "gameWin", false);
     (0, _defineProperty2.default)(this, "powerPillActive", false);
     (0, _defineProperty2.default)(this, "powerPillTimer", null);
+    // this.$target = $target;
     this.redirectProtfolio = redirectProtfolio;
+    this.$gameBoard = document.createElement('div');
+    this.$gameBoard.className = 'game-board';
     this.header = new _Header.default({
       $target: $target,
       visibleModal: visibleModal
     }); // 클릭시 해당 모달 발생
 
-    this.board = new _Board.default({
-      $target: $target
-    }); // 점수 오를시 score.setState
+    $target.appendChild(this.$gameBoard);
+    this.board = _Board.default.createGameBoard(this.$gameBoard); // this.board = new Board({ $gameBoard: this.$gameBoard });
+    // 점수 오를시 score.setState
     // 게임 승리 -> 포트폴리오 이동
+    // console.log(this.board, 'this board')
+    // this.board.createGameBoard(this.$gameBoard);
 
     this.score = new _ScoreRow.default({
       $target: $target
     });
     this.interface = new _Interface.default({
       $target: $target,
-      onStartGame: this.startGame
+      onStartGame: function onStartGame() {
+        return _this.startGame();
+      }
     }); // 시작버튼 클릭 -> 게임시작 로직 실행
   } // Game Constants
 
@@ -840,29 +850,27 @@ var Game = /*#__PURE__*/function () {
   }, {
     key: "startGame",
     value: function startGame() {
-      var _this = this;
+      var _this2 = this;
 
-      // this.playAudio(soundGameStart);
-      // const soundEffect = new Audio(soundGameStart);
-      // soundEffect.play();
+      this.playAudio(_game_start.default); // this.board = new Board({
+      //   $target: this.$target,
+      // });
+
       this.gameWin = false;
       this.powerPillActive = false;
       this.score = 0;
       document.querySelector('.start-button').classList.add('hide'); // 시작버튼 hide
+      // console.log(this.board, this.header, 'this.board');
 
-      console.log(this.board, this.header, 'this.board');
       this.board.createGrid(_setup.LEVEL);
       var pacman = new _Pacman.default(2, 287);
       this.board.addObject(287, [_setup.OBJECT_TYPE.PACMAN]); // 팩맨 위치에 팩맨 클래스 추가
 
       document.addEventListener('keydown', function (e) {
-        return pacman.handleKeyInput(e, board.objectExist.bind(_this.board));
+        return pacman.handleKeyInput(e, board.objectExist.bind(_this2.board));
       });
       var ghosts = [new _Ghost.default(5, 188, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.PINKY), new _Ghost.default(3, 230, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(2, 251, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.CLYDE)]; // 매초 게임 루프 실행
-
-      this.timer = setInterval(function () {
-        return gameLoop(pacman, ghosts);
-      }, GLOBAL_SPEED);
+      // this.timer = setInterval(() => gameLoop(pacman, ghosts), this.GLOBAL_SPEED);
     }
   }]);
   return Game;
@@ -968,7 +976,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3018" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3911" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

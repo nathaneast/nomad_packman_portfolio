@@ -7,35 +7,30 @@ import {
 } from '../../util/setup';
 
 export default class Board {
-  constructor({ $target }) {
+  constructor({ $gameBoard }) {
+    this.$gameBoard = $gameBoard;
     this.dotCount = 0;
     this.grid = [];
-
-    this.board = document.createElement('div');
-    this.board.className = 'game-board';
-    $target.appendChild(this.board);
-
-    // this.createGrid(LEVEL);
   }
 
   showGameStatus(gameWin) {
     const div = document.createElement('div');
     div.classList.add('game-status');
     div.innerHTML = `${gameWin ? 'win!' : 'lose!'}`;
-    this.board.appendChild(div);
+    this.$gameBoard.appendChild(div);
   }
 
   createGrid(level) {
     this.dotCount = 0;
     this.grid = [];
-    this.board.innerHTML = '';
-    this.board.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px);`;
+    this.$gameBoard.innerHTML = '';
+    this.$gameBoard.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px);`;
 
     level.forEach((square) => {
       const div = document.createElement('div');
       div.classList.add('square', CLASS_LIST[square]);
       div.style.cssText = `width: ${CELL_SIZE}px; height: ${CELL_SIZE}px;`;
-      this.board.appendChild(div);
+      this.$gameBoard.appendChild(div);
       this.grid.push(div);
 
       // Add dots
@@ -83,10 +78,11 @@ export default class Board {
       character.setNewPos(nextMovePos, direction);
     }
   }
-
-  static createGameBoard(DOMGrid, level) {
-    const board = new this(DOMGrid);
-    board.createGrid(level);
+  
+  // static createGameBoard(DOMGrid, level) {
+  static createGameBoard(domEle) {
+    const board = new this({ $gameBoard: domEle });
+    board.createGrid(LEVEL);
     return board;
   }
 }

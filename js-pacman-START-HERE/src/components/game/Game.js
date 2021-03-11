@@ -18,7 +18,11 @@ import Ghost from '../Ghost';
 
 export default class Game {
   constructor({ $target, redirectProtfolio, visibleModal }) {
+    // this.$target = $target;
     this.redirectProtfolio = redirectProtfolio;
+
+    this.$gameBoard = document.createElement('div');
+    this.$gameBoard.className = 'game-board';
 
     this.header = new Header({
       $target,
@@ -26,11 +30,17 @@ export default class Game {
     });
     // 클릭시 해당 모달 발생
 
-    this.board = new Board({
-      $target,
-    });
+    $target.appendChild(this.$gameBoard);
+
+    this.board = Board.createGameBoard(this.$gameBoard);
+
+    // this.board = new Board({ $gameBoard: this.$gameBoard });
     // 점수 오를시 score.setState
     // 게임 승리 -> 포트폴리오 이동
+
+    // console.log(this.board, 'this board')
+
+    // this.board.createGameBoard(this.$gameBoard);
 
     this.score = new ScoreRow({
       $target,
@@ -38,9 +48,10 @@ export default class Game {
 
     this.interface = new Interface({
       $target,
-      onStartGame: this.startGame,
+      onStartGame: () => this.startGame(),
     });
     // 시작버튼 클릭 -> 게임시작 로직 실행
+
   }
       
   // Game Constants
@@ -60,10 +71,11 @@ export default class Game {
   }
 
   startGame() {
-    // this.playAudio(soundGameStart);
+    this.playAudio(soundGameStart);
 
-    // const soundEffect = new Audio(soundGameStart);
-    // soundEffect.play();
+    // this.board = new Board({
+    //   $target: this.$target,
+    // });
   
     this.gameWin = false;
     this.powerPillActive = false;
@@ -72,7 +84,7 @@ export default class Game {
     document.querySelector('.start-button').classList.add('hide');
     // 시작버튼 hide
 
-    console.log(this.board, this.header, 'this.board');
+    // console.log(this.board, this.header, 'this.board');
   
     this.board.createGrid(LEVEL);
   
@@ -92,6 +104,6 @@ export default class Game {
     ];
   
     // 매초 게임 루프 실행
-    this.timer = setInterval(() => gameLoop(pacman, ghosts), GLOBAL_SPEED);
+    // this.timer = setInterval(() => gameLoop(pacman, ghosts), this.GLOBAL_SPEED);
   }
 }
