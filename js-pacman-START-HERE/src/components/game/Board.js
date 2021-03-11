@@ -47,6 +47,7 @@ export default class Board {
           default:
             square
         }
+        div.classList.add('item', CLASS_LIST[square]);
       }
 
       this.$gameBoard.appendChild(div);

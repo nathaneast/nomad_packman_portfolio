@@ -18,7 +18,6 @@ import Ghost from '../Ghost';
 
 export default class Game {
   constructor({ $target, redirectProtfolio, visibleModal }) {
-    // this.$target = $target;
     this.redirectProtfolio = redirectProtfolio;
 
     this.$gameBoard = document.createElement('div');
@@ -28,12 +27,11 @@ export default class Game {
       $target,
       visibleModal,
     });
-    // 클릭시 해당 모달 발생
+    // 클릭시 해당 모달 발생 fn
 
     $target.appendChild(this.$gameBoard);
     this.board = Board.createGameBoard(this.$gameBoard, LEVEL);
-    // 점수 오를시 score.setState
-    // 게임 승리 -> 포트폴리오 이동
+    // 게임 승리 -> 포트폴리오 이동 fn
 
     this.scoreRow = new ScoreRow({
       $target,
@@ -43,18 +41,22 @@ export default class Game {
       $target,
       onStartGame: () => this.startGame(),
     });
-    // 시작버튼 클릭 -> 게임시작 로직 실행
   }
 
   // Game Constants
   POWER_PILL_TIME = 10000; // ms
   GLOBAL_SPEED = 80; // ms
 
+  // Charactor
+  pacman = null;
+  ghosts = null;
+
   // Init Setup
   timer = null;
   gameWin = false;
   powerPillActive = false;
   powerPillTimer = null;
+  itemCount = 0;
 
   playAudio(audio) {
     const soundEffect = new Audio(audio);
@@ -89,7 +91,6 @@ export default class Game {
         ]);
         collidedGhost.pos = collidedGhost.startPos;
         this.scoreRow.setState(100);
-        //TODO: score setState
       } else {
         this.board.removeObject(pacman.pos, [OBJECT_TYPE.PACMAN]);
         this.board.rotateDiv(pacman.pos, 0);
@@ -112,7 +113,6 @@ export default class Game {
       this.board.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
       this.board.dotCount--;
       this.scoreRow.setState(10);
-      //TODO: score setState
     }
 
     // power pill 먹었을시
@@ -122,7 +122,6 @@ export default class Game {
       this.board.removeObject(pacman.pos, [OBJECT_TYPE.PILL]);
       pacman.powerPill = true;
       this.scoreRow.setState(50);
-      //TODO: score setState
 
       clearTimeout(this.powerPillTimer);
       this.powerPillTimer = setTimeout(
@@ -137,13 +136,21 @@ export default class Game {
       ghosts.forEach((ghost) => (ghost.isScared = pacman.powerPill));
     }
 
+    // 아이템을 먹었을때
+    if (this.board.objectExist(pacman.pos, ['item'])) {
+      this.playAudio(soundDot);
+
+      this.board.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
+      this.board.dotCount--;
+      this.scoreRow.setState(10);
+    }
+
+
     // dot 모두 먹었을시 게임 승리
     if (this.board.dotCount === 0) {
       this.gameWin = true;
       this.gameOver(pacman);
     }
-
-    // scoreTable.innerHTML = score;
   }
 
   startGame() {
@@ -176,5 +183,17 @@ export default class Game {
 
     // 매초 게임 루프 실행
     this.timer = setInterval(() => this.gameLoop(pacman, ghosts), this.GLOBAL_SPEED);
+
+    setTimeout(() => {
+      console.log('3초 후 게임 종료');
+      clearTimeout(this.timer);
+      console.log(this.timer, 'this.timer');
+
+      setTimeout(() => {
+        console.log('6초 후 게임 재시작');
+      }, 3000);
+
+    }, 3000)
+
   }
 }

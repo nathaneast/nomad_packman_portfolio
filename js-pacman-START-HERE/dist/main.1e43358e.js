@@ -480,6 +480,8 @@ var Board = /*#__PURE__*/function () {
             default:
               square;
           }
+
+          div.classList.add('item', _setup.CLASS_LIST[square]);
         }
 
         _this.$gameBoard.appendChild(div);
@@ -875,22 +877,23 @@ var Game = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Game);
     (0, _defineProperty2.default)(this, "POWER_PILL_TIME", 10000);
     (0, _defineProperty2.default)(this, "GLOBAL_SPEED", 80);
+    (0, _defineProperty2.default)(this, "pacman", null);
+    (0, _defineProperty2.default)(this, "ghosts", null);
     (0, _defineProperty2.default)(this, "timer", null);
     (0, _defineProperty2.default)(this, "gameWin", false);
     (0, _defineProperty2.default)(this, "powerPillActive", false);
     (0, _defineProperty2.default)(this, "powerPillTimer", null);
-    // this.$target = $target;
+    (0, _defineProperty2.default)(this, "itemCount", 0);
     this.redirectProtfolio = redirectProtfolio;
     this.$gameBoard = document.createElement('div');
     this.$gameBoard.className = 'game-board';
     this.header = new _Header.default({
       $target: $target,
       visibleModal: visibleModal
-    }); // 클릭시 해당 모달 발생
+    }); // 클릭시 해당 모달 발생 fn
 
     $target.appendChild(this.$gameBoard);
-    this.board = _Board.default.createGameBoard(this.$gameBoard, _setup.LEVEL); // 점수 오를시 score.setState
-    // 게임 승리 -> 포트폴리오 이동
+    this.board = _Board.default.createGameBoard(this.$gameBoard, _setup.LEVEL); // 게임 승리 -> 포트폴리오 이동 fn
 
     this.scoreRow = new _ScoreRow.default({
       $target: $target
@@ -900,7 +903,7 @@ var Game = /*#__PURE__*/function () {
       onStartGame: function onStartGame() {
         return _this.startGame();
       }
-    }); // 시작버튼 클릭 -> 게임시작 로직 실행
+    });
   } // Game Constants
 
 
@@ -935,7 +938,7 @@ var Game = /*#__PURE__*/function () {
           this.playAudio(_eat_ghost.default);
           this.board.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]);
           collidedGhost.pos = collidedGhost.startPos;
-          this.scoreRow.setState(100); //TODO: score setState
+          this.scoreRow.setState(100);
         } else {
           this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]);
           this.board.rotateDiv(pacman.pos, 0);
@@ -959,7 +962,7 @@ var Game = /*#__PURE__*/function () {
         this.playAudio(_munch.default);
         this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
         this.board.dotCount--;
-        this.scoreRow.setState(10); //TODO: score setState
+        this.scoreRow.setState(10);
       } // power pill 먹었을시
 
 
@@ -967,8 +970,7 @@ var Game = /*#__PURE__*/function () {
         this.playAudio(_pill.default);
         this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
         pacman.powerPill = true;
-        this.scoreRow.setState(50); //TODO: score setState
-
+        this.scoreRow.setState(50);
         clearTimeout(this.powerPillTimer);
         this.powerPillTimer = setTimeout(function () {
           return pacman.powerPill = false;
@@ -981,14 +983,21 @@ var Game = /*#__PURE__*/function () {
         ghosts.forEach(function (ghost) {
           return ghost.isScared = pacman.powerPill;
         });
+      } // 아이템을 먹었을때
+
+
+      if (this.board.objectExist(pacman.pos, ['item'])) {
+        this.playAudio(_munch.default);
+        this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
+        this.board.dotCount--;
+        this.scoreRow.setState(10);
       } // dot 모두 먹었을시 게임 승리
 
 
       if (this.board.dotCount === 0) {
         this.gameWin = true;
         this.gameOver(pacman);
-      } // scoreTable.innerHTML = score;
-
+      }
     }
   }, {
     key: "startGame",
@@ -1013,6 +1022,14 @@ var Game = /*#__PURE__*/function () {
       this.timer = setInterval(function () {
         return _this4.gameLoop(pacman, ghosts);
       }, this.GLOBAL_SPEED);
+      setTimeout(function () {
+        console.log('3초 후 게임 종료');
+        clearTimeout(_this4.timer);
+        console.log(_this4.timer, 'this.timer');
+        setTimeout(function () {
+          console.log('6초 후 게임 재시작');
+        }, 3000);
+      }, 3000);
     }
   }]);
   return Game;
