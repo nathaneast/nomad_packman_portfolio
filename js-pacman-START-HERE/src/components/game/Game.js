@@ -1,4 +1,4 @@
-import { LEVEL, OBJECT_TYPE } from '../../util/setup';
+import { LEVEL, OBJECT_TYPE, createItemAtLevel } from '../../util/setup';
 import { randomMovement } from '../../util/ghostmoves';
 
 // Sounds
@@ -31,7 +31,7 @@ export default class Game {
     // 클릭시 해당 모달 발생
 
     $target.appendChild(this.$gameBoard);
-    this.board = Board.createGameBoard(this.$gameBoard);
+    this.board = Board.createGameBoard(this.$gameBoard, LEVEL);
     // 점수 오를시 score.setState
     // 게임 승리 -> 포트폴리오 이동
 
@@ -149,7 +149,7 @@ export default class Game {
   startGame() {
     this.playAudio(soundGameStart);
 
-    this.board = Board.createGameBoard(this.$gameBoard);
+    this.board = Board.createGameBoard(this.$gameBoard, createItemAtLevel());
 
     this.scoreRow.initState();
 
@@ -158,8 +158,6 @@ export default class Game {
     this.score = 0;
 
     document.querySelector('.start-button').classList.add('hide');
-
-    this.board.createGrid(LEVEL);
 
     const pacman = new Pacman(2, 287);
     this.board.addObject(287, [OBJECT_TYPE.PACMAN]);

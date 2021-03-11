@@ -35,7 +35,11 @@ export const OBJECT_TYPE = {
   PACMAN: 'pacman',
   GHOST: 'ghost',
   SCARED: 'scared',
-  GHOSTLAIR: 'lair'
+  GHOSTLAIR: 'lair',
+  ITEM_CONTACT: 'item-contact', //items
+  ITEM_PORTFOLIO: 'item-portfolio',
+  ITEM_SKILL: 'item-skill',
+  ITEM_INTRODUCE: 'item-introduce'
 };
 
 // Lookup array for classes
@@ -49,7 +53,11 @@ export const CLASS_LIST = [
   OBJECT_TYPE.CLYDE, // ghost
   OBJECT_TYPE.PILL,
   OBJECT_TYPE.PACMAN,
-  OBJECT_TYPE.GHOSTLAIR
+  OBJECT_TYPE.GHOSTLAIR,
+  OBJECT_TYPE.ITEM_CONTACT, // 10~ items
+  OBJECT_TYPE.ITEM_PORTFOLIO,
+  OBJECT_TYPE.ITEM_SKILL,
+  OBJECT_TYPE.ITEM_INTRODUCE,
 ];
 
 // prettier-ignore
@@ -78,3 +86,32 @@ export const LEVEL = [
   1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ];
+
+export const createItemAtLevel = () => {
+  const level = LEVEL.slice();
+  const dotIndexs = [];
+  const itemKeys = [];
+  let count = 0;
+  let itemIndex = 10;
+
+  level.forEach((item, index) => {
+    if (item === 2) {
+      dotIndexs.push(index);
+    }
+  });
+
+  do {
+    const randomKey = Math.floor(Math.random() * dotIndexs.length);
+    if (dotIndexs[randomKey]) {
+      itemKeys.push(dotIndexs[randomKey]);
+      dotIndexs[randomKey] = null;
+      count++;
+    }
+  } while (count <= 3); 
+
+  for (let key of itemKeys) {
+    level[key] = itemIndex++;
+  }
+
+  return level;
+}

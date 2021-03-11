@@ -166,7 +166,7 @@ module.exports = _defineProperty;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.DIRECTIONS = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
+exports.createItemAtLevel = exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.DIRECTIONS = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
 var GRID_SIZE = 20;
 exports.GRID_SIZE = GRID_SIZE;
 var CELL_SIZE = 20;
@@ -207,7 +207,12 @@ var OBJECT_TYPE = {
   PACMAN: 'pacman',
   GHOST: 'ghost',
   SCARED: 'scared',
-  GHOSTLAIR: 'lair'
+  GHOSTLAIR: 'lair',
+  ITEM_CONTACT: 'item-contact',
+  //items
+  ITEM_PORTFOLIO: 'item-portfolio',
+  ITEM_SKILL: 'item-skill',
+  ITEM_INTRODUCE: 'item-introduce'
 }; // Lookup array for classes
 
 exports.OBJECT_TYPE = OBJECT_TYPE;
@@ -215,11 +220,44 @@ var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_T
 OBJECT_TYPE.PINKY, // ghost
 OBJECT_TYPE.INKY, // ghost
 OBJECT_TYPE.CLYDE, // ghost
-OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // prettier-ignore
+OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR, OBJECT_TYPE.ITEM_CONTACT, // 10~ items
+OBJECT_TYPE.ITEM_PORTFOLIO, OBJECT_TYPE.ITEM_SKILL, OBJECT_TYPE.ITEM_INTRODUCE]; // prettier-ignore
 
 exports.CLASS_LIST = CLASS_LIST;
 var LEVEL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 2, 2, 2, 1, 9, 9, 9, 9, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 exports.LEVEL = LEVEL;
+
+var createItemAtLevel = function createItemAtLevel() {
+  var level = LEVEL.slice();
+  var dotIndexs = [];
+  var itemKeys = [];
+  var count = 0;
+  var itemIndex = 10;
+  level.forEach(function (item, index) {
+    if (item === 2) {
+      dotIndexs.push(index);
+    }
+  });
+
+  do {
+    var randomKey = Math.floor(Math.random() * dotIndexs.length);
+
+    if (dotIndexs[randomKey]) {
+      itemKeys.push(dotIndexs[randomKey]);
+      dotIndexs[randomKey] = null;
+      count++;
+    }
+  } while (count <= 3);
+
+  for (var _i = 0, _itemKeys = itemKeys; _i < _itemKeys.length; _i++) {
+    var key = _itemKeys[_i];
+    level[key] = itemIndex++;
+  }
+
+  return level;
+};
+
+exports.createItemAtLevel = createItemAtLevel;
 },{}],"src/util/ghostmoves.js":[function(require,module,exports) {
 "use strict";
 
@@ -421,6 +459,29 @@ var Board = /*#__PURE__*/function () {
         div.classList.add('square', _setup.CLASS_LIST[square]);
         div.style.cssText = "width: ".concat(_setup.CELL_SIZE, "px; height: ").concat(_setup.CELL_SIZE, "px;");
 
+        if (square >= 10) {
+          switch (square) {
+            case 10:
+              div.innerText = '📞';
+              break;
+
+            case 11:
+              div.innerText = '🚀';
+              break;
+
+            case 12:
+              div.innerText = '🔧';
+              break;
+
+            case 13:
+              div.innerText = '🧑';
+              break;
+
+            default:
+              square;
+          }
+        }
+
         _this.$gameBoard.appendChild(div);
 
         _this.grid.push(div); // Add dots
@@ -484,11 +545,11 @@ var Board = /*#__PURE__*/function () {
 
   }], [{
     key: "createGameBoard",
-    value: function createGameBoard(domEle) {
+    value: function createGameBoard(domEle, level) {
       var board = new this({
         $gameBoard: domEle
       });
-      board.createGrid(_setup.LEVEL);
+      board.createGrid(level);
       return board;
     }
   }]);
@@ -828,7 +889,7 @@ var Game = /*#__PURE__*/function () {
     }); // 클릭시 해당 모달 발생
 
     $target.appendChild(this.$gameBoard);
-    this.board = _Board.default.createGameBoard(this.$gameBoard); // 점수 오를시 score.setState
+    this.board = _Board.default.createGameBoard(this.$gameBoard, _setup.LEVEL); // 점수 오를시 score.setState
     // 게임 승리 -> 포트폴리오 이동
 
     this.scoreRow = new _ScoreRow.default({
@@ -935,13 +996,12 @@ var Game = /*#__PURE__*/function () {
       var _this4 = this;
 
       this.playAudio(_game_start.default);
-      this.board = _Board.default.createGameBoard(this.$gameBoard);
+      this.board = _Board.default.createGameBoard(this.$gameBoard, (0, _setup.createItemAtLevel)());
       this.scoreRow.initState();
       this.gameWin = false;
       this.powerPillActive = false;
       this.score = 0;
       document.querySelector('.start-button').classList.add('hide');
-      this.board.createGrid(_setup.LEVEL);
       var pacman = new _Pacman.default(2, 287);
       this.board.addObject(287, [_setup.OBJECT_TYPE.PACMAN]); // 팩맨 위치에 팩맨 클래스 추가
 

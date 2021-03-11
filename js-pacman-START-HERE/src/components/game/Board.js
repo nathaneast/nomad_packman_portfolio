@@ -1,5 +1,4 @@
 import {
-  LEVEL,
   GRID_SIZE,
   CELL_SIZE,
   OBJECT_TYPE,
@@ -30,6 +29,26 @@ export default class Board {
       const div = document.createElement('div');
       div.classList.add('square', CLASS_LIST[square]);
       div.style.cssText = `width: ${CELL_SIZE}px; height: ${CELL_SIZE}px;`;
+
+      if (square >= 10) {
+        switch (square) {
+          case 10:
+            div.innerText = '📞';
+            break;
+          case 11:
+            div.innerText = '🚀';
+            break;
+          case 12:
+            div.innerText = '🔧';
+            break;
+          case 13:
+            div.innerText = '🧑';
+            break;
+          default:
+            square
+        }
+      }
+
       this.$gameBoard.appendChild(div);
       this.grid.push(div);
 
@@ -80,9 +99,9 @@ export default class Board {
   }
   
   // static createGameBoard(DOMGrid, level) {
-  static createGameBoard(domEle) {
+  static createGameBoard(domEle, level) {
     const board = new this({ $gameBoard: domEle });
-    board.createGrid(LEVEL);
+    board.createGrid(level);
     return board;
   }
 }
