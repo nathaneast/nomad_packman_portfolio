@@ -522,15 +522,21 @@ var ScoreRow = /*#__PURE__*/function () {
   }
 
   (0, _createClass2.default)(ScoreRow, [{
+    key: "initState",
+    value: function initState() {
+      this.score = 0;
+      this.render();
+    }
+  }, {
     key: "setState",
     value: function setState(score) {
-      this.score = score;
+      this.score += score;
       this.render();
     }
   }, {
     key: "render",
     value: function render() {
-      this.scoreRow.innerHTML = "\n        <span>".concat(0, "</span>\n      ");
+      this.scoreRow.innerHTML = "\n        <span>".concat(this.score, "</span>\n      ");
     }
   }]);
   return ScoreRow;
@@ -808,7 +814,6 @@ var Game = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Game);
     (0, _defineProperty2.default)(this, "POWER_PILL_TIME", 10000);
     (0, _defineProperty2.default)(this, "GLOBAL_SPEED", 80);
-    (0, _defineProperty2.default)(this, "score", 0);
     (0, _defineProperty2.default)(this, "timer", null);
     (0, _defineProperty2.default)(this, "gameWin", false);
     (0, _defineProperty2.default)(this, "powerPillActive", false);
@@ -823,13 +828,10 @@ var Game = /*#__PURE__*/function () {
     }); // 클릭시 해당 모달 발생
 
     $target.appendChild(this.$gameBoard);
-    this.board = _Board.default.createGameBoard(this.$gameBoard); // this.board = new Board({ $gameBoard: this.$gameBoard });
-    // 점수 오를시 score.setState
+    this.board = _Board.default.createGameBoard(this.$gameBoard); // 점수 오를시 score.setState
     // 게임 승리 -> 포트폴리오 이동
-    // console.log(this.board, 'this board')
-    // this.board.createGameBoard(this.$gameBoard);
 
-    this.score = new _ScoreRow.default({
+    this.scoreRow = new _ScoreRow.default({
       $target: $target
     });
     this.interface = new _Interface.default({
@@ -848,29 +850,109 @@ var Game = /*#__PURE__*/function () {
       soundEffect.play();
     }
   }, {
-    key: "startGame",
-    value: function startGame() {
+    key: "gameOver",
+    value: function gameOver(pacman) {
       var _this2 = this;
 
-      this.playAudio(_game_start.default); // this.board = new Board({
-      //   $target: this.$target,
-      // });
+      this.playAudio(_death.default);
+      document.removeEventListener('keydown', function (e) {
+        return pacman.handleKeyInput(e, _this2.board.objectExist.bind(_this2.board));
+      });
+      this.board.showGameStatus(this.gameWin);
+      clearInterval(this.timer);
+      document.querySelector('.start-button').classList.remove('hide');
+    }
+  }, {
+    key: "checkCollision",
+    value: function checkCollision(pacman, ghosts) {
+      var collidedGhost = ghosts.find(function (ghost) {
+        return pacman.pos === ghost.pos;
+      });
 
+      if (collidedGhost) {
+        if (pacman.powerPill) {
+          this.playAudio(_eat_ghost.default);
+          this.board.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]);
+          collidedGhost.pos = collidedGhost.startPos;
+          this.scoreRow.setState(100); //TODO: score setState
+        } else {
+          this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]);
+          this.board.rotateDiv(pacman.pos, 0);
+          this.gameOver(pacman);
+        }
+      }
+    }
+  }, {
+    key: "gameLoop",
+    value: function gameLoop(pacman, ghosts) {
+      var _this3 = this;
+
+      this.board.moveCharacter(pacman);
+      this.checkCollision(pacman, ghosts);
+      ghosts.forEach(function (ghost) {
+        return _this3.board.moveCharacter(ghost);
+      });
+      this.checkCollision(pacman, ghosts); // dot 먹었을시
+
+      if (this.board.objectExist(pacman.pos, _setup.OBJECT_TYPE.DOT)) {
+        this.playAudio(_munch.default);
+        this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
+        this.board.dotCount--;
+        this.scoreRow.setState(10); //TODO: score setState
+      } // power pill 먹었을시
+
+
+      if (this.board.objectExist(pacman.pos, _setup.OBJECT_TYPE.PILL)) {
+        this.playAudio(_pill.default);
+        this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
+        pacman.powerPill = true;
+        this.scoreRow.setState(50); //TODO: score setState
+
+        clearTimeout(this.powerPillTimer);
+        this.powerPillTimer = setTimeout(function () {
+          return pacman.powerPill = false;
+        }, this.POWER_PILL_TIME);
+      } // power pill 모드, 고스트 scare 핸들링
+
+
+      if (pacman.powerPill !== this.powerPillActive) {
+        this.powerPillActive = pacman.powerPill;
+        ghosts.forEach(function (ghost) {
+          return ghost.isScared = pacman.powerPill;
+        });
+      } // dot 모두 먹었을시 게임 승리
+
+
+      if (this.board.dotCount === 0) {
+        this.gameWin = true;
+        this.gameOver(pacman);
+      } // scoreTable.innerHTML = score;
+
+    }
+  }, {
+    key: "startGame",
+    value: function startGame() {
+      var _this4 = this;
+
+      this.playAudio(_game_start.default);
+      this.board = _Board.default.createGameBoard(this.$gameBoard);
+      this.scoreRow.initState();
       this.gameWin = false;
       this.powerPillActive = false;
       this.score = 0;
-      document.querySelector('.start-button').classList.add('hide'); // 시작버튼 hide
-      // console.log(this.board, this.header, 'this.board');
-
+      document.querySelector('.start-button').classList.add('hide');
       this.board.createGrid(_setup.LEVEL);
       var pacman = new _Pacman.default(2, 287);
       this.board.addObject(287, [_setup.OBJECT_TYPE.PACMAN]); // 팩맨 위치에 팩맨 클래스 추가
 
       document.addEventListener('keydown', function (e) {
-        return pacman.handleKeyInput(e, board.objectExist.bind(_this2.board));
+        return pacman.handleKeyInput(e, _this4.board.objectExist.bind(_this4.board));
       });
       var ghosts = [new _Ghost.default(5, 188, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.PINKY), new _Ghost.default(3, 230, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(2, 251, _ghostmoves.randomMovement, _setup.OBJECT_TYPE.CLYDE)]; // 매초 게임 루프 실행
-      // this.timer = setInterval(() => gameLoop(pacman, ghosts), this.GLOBAL_SPEED);
+
+      this.timer = setInterval(function () {
+        return _this4.gameLoop(pacman, ghosts);
+      }, this.GLOBAL_SPEED);
     }
   }]);
   return Game;
