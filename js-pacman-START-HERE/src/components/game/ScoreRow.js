@@ -1,6 +1,6 @@
 export default class ScoreRow {
   constructor({ $target }) {
-    this.score = 0;
+    this.renderScore = 0;
 
     this.scoreRow = document.createElement('div');
     this.scoreRow.className = 'score';
@@ -10,18 +10,18 @@ export default class ScoreRow {
   }
   
   initState() {
-    this.score = 0;
+    this.renderScore = 0;
     this.render();
   }
 
   setState(score) {
-    this.score += score;
+    this.renderScore = score;
     this.render();
   }
 
   render () {
     this.scoreRow.innerHTML = `
-        <span>${this.score}</span>
+        <span>${this.renderScore}</span>
       `;
   }
 }

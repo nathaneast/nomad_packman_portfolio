@@ -34,18 +34,22 @@ export default class Board {
         switch (square) {
           case 10:
             div.innerText = '📞';
+            div.dataset['itemId'] = 10;
             break;
           case 11:
             div.innerText = '🚀';
+            div.dataset['itemId'] = 11;
             break;
           case 12:
             div.innerText = '🔧';
+            div.dataset['itemId'] = 12;
             break;
           case 13:
             div.innerText = '🧑';
+            div.dataset['itemId'] = 13;
             break;
           default:
-            square
+            square;
         }
         div.classList.add('item', CLASS_LIST[square]);
       }
@@ -69,6 +73,10 @@ export default class Board {
 
   removeItem(pos) {
     this.grid[pos].innerHTML = '';
+  }
+
+  getCurrentNode(pos) {
+    return this.grid[pos];
   }
 
   // Can have an arrow function here cause of this binding

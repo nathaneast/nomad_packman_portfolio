@@ -220,7 +220,7 @@ var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_T
 OBJECT_TYPE.PINKY, // ghost
 OBJECT_TYPE.INKY, // ghost
 OBJECT_TYPE.CLYDE, // ghost
-OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR, OBJECT_TYPE.ITEM_CONTACT, // 10~ items
+OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR, OBJECT_TYPE.ITEM_CONTACT, // 10 이상부터 item
 OBJECT_TYPE.ITEM_PORTFOLIO, OBJECT_TYPE.ITEM_SKILL, OBJECT_TYPE.ITEM_INTRODUCE]; // prettier-ignore
 
 exports.CLASS_LIST = CLASS_LIST;
@@ -323,7 +323,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Header = /*#__PURE__*/function () {
   function Header(_ref) {
     var $target = _ref.$target,
-        visibleModal = _ref.visibleModal;
+        handleModal = _ref.handleModal;
     (0, _classCallCheck2.default)(this, Header);
     this.header = document.createElement('div');
     this.header.className = 'game-header';
@@ -341,9 +341,9 @@ var Header = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       this.header.innerHTML = "\n      <button onclick=".concat(function () {
-        return visibleModal(_modalSentence.INTRODUCE);
+        return handleModal(_modalSentence.INTRODUCE);
       }, ">\uC124\uBA85\uBCF4\uAE30</button>\n      <button onclick=").concat(function () {
-        return visibleModal(_modalSentence.INTRODUCE);
+        return handleModal(_modalSentence.INTRODUCE);
       }, ">\uB7AD\uD0B9\uBCF4\uAE30</button>\n      ");
     }
   }]);
@@ -463,18 +463,22 @@ var Board = /*#__PURE__*/function () {
           switch (square) {
             case 10:
               div.innerText = '📞';
+              div.dataset['itemId'] = 10;
               break;
 
             case 11:
               div.innerText = '🚀';
+              div.dataset['itemId'] = 11;
               break;
 
             case 12:
               div.innerText = '🔧';
+              div.dataset['itemId'] = 12;
               break;
 
             case 13:
               div.innerText = '🧑';
+              div.dataset['itemId'] = 13;
               break;
 
             default:
@@ -511,6 +515,11 @@ var Board = /*#__PURE__*/function () {
     key: "removeItem",
     value: function removeItem(pos) {
       this.grid[pos].innerHTML = '';
+    }
+  }, {
+    key: "getCurrentNode",
+    value: function getCurrentNode(pos) {
+      return this.grid[pos];
     } // Can have an arrow function here cause of this binding
 
   }, {
@@ -582,7 +591,7 @@ var ScoreRow = /*#__PURE__*/function () {
   function ScoreRow(_ref) {
     var $target = _ref.$target;
     (0, _classCallCheck2.default)(this, ScoreRow);
-    this.score = 0;
+    this.renderScore = 0;
     this.scoreRow = document.createElement('div');
     this.scoreRow.className = 'score';
     $target.appendChild(this.scoreRow);
@@ -592,19 +601,19 @@ var ScoreRow = /*#__PURE__*/function () {
   (0, _createClass2.default)(ScoreRow, [{
     key: "initState",
     value: function initState() {
-      this.score = 0;
+      this.renderScore = 0;
       this.render();
     }
   }, {
     key: "setState",
     value: function setState(score) {
-      this.score += score;
+      this.renderScore = score;
       this.render();
     }
   }, {
     key: "render",
     value: function render() {
-      this.scoreRow.innerHTML = "\n        <span>".concat(this.score, "</span>\n      ");
+      this.scoreRow.innerHTML = "\n        <span>".concat(this.renderScore, "</span>\n      ");
     }
   }]);
   return ScoreRow;
@@ -689,8 +698,7 @@ var Pacman = /*#__PURE__*/function () {
     this.dir = null;
     this.timer = 0; // ?
 
-    this.powerPill = false;
-    this.rotation = true; // ?
+    this.powerPill = false; // this.rotation = true; // ?
   }
 
   (0, _createClass2.default)(Pacman, [{
@@ -878,7 +886,7 @@ var Game = /*#__PURE__*/function () {
 
     var $target = _ref.$target,
         redirectProtfolio = _ref.redirectProtfolio,
-        visibleModal = _ref.visibleModal;
+        handleModal = _ref.handleModal;
     (0, _classCallCheck2.default)(this, Game);
     (0, _defineProperty2.default)(this, "POWER_PILL_TIME", 10000);
     (0, _defineProperty2.default)(this, "GLOBAL_SPEED", 80);
@@ -887,12 +895,14 @@ var Game = /*#__PURE__*/function () {
     (0, _defineProperty2.default)(this, "powerPillActive", false);
     (0, _defineProperty2.default)(this, "powerPillTimer", null);
     (0, _defineProperty2.default)(this, "itemCount", 0);
+    (0, _defineProperty2.default)(this, "score", 0);
     this.redirectProtfolio = redirectProtfolio;
+    console.log($target, 'Game $target');
     this.$gameBoard = document.createElement('div');
     this.$gameBoard.className = 'game-board';
     this.header = new _Header.default({
       $target: $target,
-      visibleModal: visibleModal
+      handleModal: handleModal
     }); // 클릭시 해당 모달 발생 fn
 
     $target.appendChild(this.$gameBoard);
@@ -911,6 +921,12 @@ var Game = /*#__PURE__*/function () {
 
 
   (0, _createClass2.default)(Game, [{
+    key: "addScore",
+    value: function addScore(num) {
+      this.score += num;
+      this.scoreRow.setState(this.score);
+    }
+  }, {
     key: "playAudio",
     value: function playAudio(audio) {
       var soundEffect = new Audio(audio);
@@ -941,7 +957,7 @@ var Game = /*#__PURE__*/function () {
           this.playAudio(_eat_ghost.default);
           this.board.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]);
           collidedGhost.pos = collidedGhost.startPos;
-          this.scoreRow.setState(100);
+          this.addScore(100);
         } else {
           this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]);
           this.board.rotateDiv(pacman.pos, 0);
@@ -965,7 +981,7 @@ var Game = /*#__PURE__*/function () {
         this.playAudio(_munch.default);
         this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
         this.board.dotCount--;
-        this.scoreRow.setState(10);
+        this.addScore(10);
       } // power pill 먹었을시
 
 
@@ -973,7 +989,7 @@ var Game = /*#__PURE__*/function () {
         this.playAudio(_pill.default);
         this.board.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
         pacman.powerPill = true;
-        this.scoreRow.setState(50);
+        this.addScore(50);
         clearTimeout(this.powerPillTimer);
         this.powerPillTimer = setTimeout(function () {
           return pacman.powerPill = false;
@@ -990,22 +1006,26 @@ var Game = /*#__PURE__*/function () {
 
 
       if (this.board.objectExist(pacman.pos, ['item'])) {
+        this.itemCount++;
+        this.addScore(200);
         clearInterval(this.timer);
-        this.board.removeObject(pacman.pos, ['item', _setup.OBJECT_TYPE.ITEM_CONTACT, _setup.OBJECT_TYPE.ITEM_PORTFOLIO, _setup.OBJECT_TYPE.ITEM_SKILL, _setup.OBJECT_TYPE.ITEM_INTRODUCE]);
-        this.board.removeItem(pacman.pos);
-        setTimeout(function () {
-          console.log('3초 후 게임 재시작');
-          _this3.timer = setInterval(function () {
-            return _this3.gameLoop(pacman, ghosts);
-          }, _this3.GLOBAL_SPEED);
-        }, 3000);
+        var itemId = this.board.getCurrentNode(pacman.pos).dataset.itemId;
+        this.board.removeObject(pacman.pos, ['item', _setup.CLASS_LIST[Number(itemId)]]);
+        this.board.removeItem(pacman.pos); // 아이템 모두 먹은 경우 작업
+        // 해당 먹은 아이템으로 모달 띄우기
+        // setTimeout(() => {
+        //   console.log('3초 후 게임 재시작');
+        //   this.timer = setInterval(
+        //     () => this.gameLoop(pacman, ghosts),
+        //     this.GLOBAL_SPEED
+        //   );
+        // }, 3000);
       } // dot 모두 먹었을시 게임 승리
+      // if (this.board.dotCount === 0) {
+      //   this.gameWin = true;
+      //   this.gameOver(pacman);
+      // }
 
-
-      if (this.board.dotCount === 0) {
-        this.gameWin = true;
-        this.gameOver(pacman);
-      }
     }
   }, {
     key: "startGame",
@@ -1036,7 +1056,38 @@ var Game = /*#__PURE__*/function () {
 }();
 
 exports.default = Game;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","../../util/setup":"src/util/setup.js","../../util/ghostmoves":"src/util/ghostmoves.js","../../sounds/munch.wav":"src/sounds/munch.wav","../../sounds/pill.wav":"src/sounds/pill.wav","../../sounds/game_start.wav":"src/sounds/game_start.wav","../../sounds/death.wav":"src/sounds/death.wav","../../sounds/eat_ghost.wav":"src/sounds/eat_ghost.wav","./Header":"src/components/game/Header.js","./Board":"src/components/game/Board.js","./ScoreRow":"src/components/game/ScoreRow.js","./Interface":"src/components/game/Interface.js","../Pacman":"src/components/Pacman.js","../Ghost":"src/components/Ghost.js"}],"src/App.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","../../util/setup":"src/util/setup.js","../../util/ghostmoves":"src/util/ghostmoves.js","../../sounds/munch.wav":"src/sounds/munch.wav","../../sounds/pill.wav":"src/sounds/pill.wav","../../sounds/game_start.wav":"src/sounds/game_start.wav","../../sounds/death.wav":"src/sounds/death.wav","../../sounds/eat_ghost.wav":"src/sounds/eat_ghost.wav","./Header":"src/components/game/Header.js","./Board":"src/components/game/Board.js","./ScoreRow":"src/components/game/ScoreRow.js","./Interface":"src/components/game/Interface.js","../Pacman":"src/components/Pacman.js","../Ghost":"src/components/Ghost.js"}],"src/components/Modal.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Modal = /*#__PURE__*/function () {
+  function Modal($target) {
+    (0, _classCallCheck2.default)(this, Modal);
+    this.$modal = document.createElement('div');
+    this.$modal.className = 'modal';
+    $target.appendChild(this.$modal);
+    this.render();
+  }
+
+  (0, _createClass2.default)(Modal, [{
+    key: "render",
+    value: function render() {}
+  }]);
+  return Modal;
+}();
+
+exports.default = Modal;
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js"}],"src/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1050,35 +1101,52 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _Game = _interopRequireDefault(require("./components/game/Game.js"));
 
+var _Modal = _interopRequireDefault(require("./components/Modal.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import portfolio from './components/Portfolio.js';
-// import modal from './components/Modal.js';
 var App = /*#__PURE__*/function () {
   function App($target) {
     var _this = this;
 
     (0, _classCallCheck2.default)(this, App);
     this.endGame = false;
+    this.isModal = false;
+    this.$game = document.createElement('section');
+    this.$game.className = 'gameSection';
+    $target.appendChild(this.$game);
+    this.$portfolio = document.createElement('section');
+    this.$portfolio.className = 'portfolioSection';
+    $target.appendChild(this.$portfolio);
+    this.$modal = document.createElement('section');
+    this.$modal.className = 'modalSection';
+    $target.appendChild(this.$modal); // game에서$game this 못찾음
 
     this.game = function () {
       return new _Game.default({
-        $target: $target,
-        redirectProtfolio: _this.handleMainContents,
-        visibleModal: _this.visibleModal
+        $game: _this.$game,
+        handleModal: _this.handleModal // redirectProtfolio: this.handleModal,
+
       });
-    }; // this.portfolio = () => new Portfolio({ $target });
-    // this.modal = () => new Modal({ $target });
+    }; // 게임 끝나고 score 포폴에 넘겨줘야함
 
 
     this.render();
-  }
+  } // this.portfolio = () => new Portfolio({ $target });
+
 
   (0, _createClass2.default)(App, [{
-    key: "visibleModal",
-    value: function visibleModal(sentence) {// CONST 스트링값 받아서 뿌려줌
-      // visible 클래스 추가
-      // modal Setstate에 해당 컨텐츠 추가
+    key: "handleModal",
+    value: function handleModal() {
+      // CONST 스트링값 받아서 뿌려줌
+      this.isModal = !this.isModal;
+      this.$modal.innerText = ""; // modal Setstate에 해당 컨텐츠 추가
+
+      if (this.isModal) {// this.modal = () => new Modal({
+        //    $target 
+        // });
+      }
     }
   }, {
     key: "handleMainContents",
@@ -1099,7 +1167,7 @@ var App = /*#__PURE__*/function () {
 }();
 
 exports.default = App;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./components/game/Game.js":"src/components/game/Game.js"}],"src/main.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./components/game/Game.js":"src/components/game/Game.js","./components/Modal.js":"src/components/Modal.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _App = _interopRequireDefault(require("./App.js"));
@@ -1135,7 +1203,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3911" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "4182" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

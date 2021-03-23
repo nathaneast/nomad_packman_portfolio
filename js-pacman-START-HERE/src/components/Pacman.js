@@ -7,7 +7,7 @@ class Pacman {
     this.dir = null;
     this.timer = 0; // ?
     this.powerPill = false;
-    this.rotation = true; // ?
+    // this.rotation = true; // ?
   }
 
   shouldMove() {

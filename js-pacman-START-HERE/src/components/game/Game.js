@@ -1,4 +1,4 @@
-import { LEVEL, OBJECT_TYPE, createItemAtLevel } from '../../util/setup';
+import { LEVEL, OBJECT_TYPE, createItemAtLevel, CLASS_LIST } from '../../util/setup';
 import { randomMovement } from '../../util/ghostmoves';
 
 // Sounds
@@ -17,15 +17,17 @@ import Pacman from '../Pacman';
 import Ghost from '../Ghost';
 
 export default class Game {
-  constructor({ $target, redirectProtfolio, visibleModal }) {
+  constructor({ $target, redirectProtfolio, handleModal }) {
     this.redirectProtfolio = redirectProtfolio;
+
+    console.log($target, 'Game $target');
 
     this.$gameBoard = document.createElement('div');
     this.$gameBoard.className = 'game-board';
 
     this.header = new Header({
       $target,
-      visibleModal,
+      handleModal,
     });
     // 클릭시 해당 모달 발생 fn
 
@@ -57,6 +59,12 @@ export default class Game {
   powerPillActive = false;
   powerPillTimer = null;
   itemCount = 0;
+  score = 0;
+
+  addScore(num) {
+    this.score += num;
+    this.scoreRow.setState(this.score);
+  }
 
   playAudio(audio) {
     const soundEffect = new Audio(audio);
@@ -90,7 +98,7 @@ export default class Game {
           collidedGhost.name,
         ]);
         collidedGhost.pos = collidedGhost.startPos;
-        this.scoreRow.setState(100);
+        this.addScore(100);
       } else {
         this.board.removeObject(pacman.pos, [OBJECT_TYPE.PACMAN]);
         this.board.rotateDiv(pacman.pos, 0);
@@ -112,7 +120,7 @@ export default class Game {
 
       this.board.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
       this.board.dotCount--;
-      this.scoreRow.setState(10);
+      this.addScore(10);
     }
 
     // power pill 먹었을시
@@ -121,7 +129,7 @@ export default class Game {
 
       this.board.removeObject(pacman.pos, [OBJECT_TYPE.PILL]);
       pacman.powerPill = true;
-      this.scoreRow.setState(50);
+      this.addScore(50);
 
       clearTimeout(this.powerPillTimer);
       this.powerPillTimer = setTimeout(
@@ -138,34 +146,36 @@ export default class Game {
 
     // 아이템을 먹었을때
     if (this.board.objectExist(pacman.pos, ['item'])) {
+      this.itemCount++;
+      this.addScore(200);
       clearInterval(this.timer);
+
+      const itemId = this.board.getCurrentNode(pacman.pos).dataset.itemId;
 
       this.board.removeObject(pacman.pos, [  
         'item',
-        OBJECT_TYPE.ITEM_CONTACT, 
-        OBJECT_TYPE.ITEM_PORTFOLIO,
-        OBJECT_TYPE.ITEM_SKILL,
-        OBJECT_TYPE.ITEM_INTRODUCE
+        CLASS_LIST[Number(itemId)]
       ]);
-
       this.board.removeItem(pacman.pos);
 
-      setTimeout(() => {
-        console.log('3초 후 게임 재시작');
-        this.timer = setInterval(
-          () => this.gameLoop(pacman, ghosts),
-          this.GLOBAL_SPEED
-        );
-      }, 3000);
+      // 아이템 모두 먹은 경우 작업
+      // 해당 먹은 아이템으로 모달 띄우기
 
+      // setTimeout(() => {
+      //   console.log('3초 후 게임 재시작');
+      //   this.timer = setInterval(
+      //     () => this.gameLoop(pacman, ghosts),
+      //     this.GLOBAL_SPEED
+      //   );
+      // }, 3000);
     }
 
 
     // dot 모두 먹었을시 게임 승리
-    if (this.board.dotCount === 0) {
-      this.gameWin = true;
-      this.gameOver(pacman);
-    }
+    // if (this.board.dotCount === 0) {
+    //   this.gameWin = true;
+    //   this.gameOver(pacman);
+    // }
   }
 
   startGame() {
